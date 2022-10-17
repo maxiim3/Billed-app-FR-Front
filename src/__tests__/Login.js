@@ -163,10 +163,10 @@ describe("Given that I am a user on login page", () => {
       document.body.innerHTML = LoginUI();
       const inputData = {
         type: "Admin",
-        email: "johndoe@email.com",
-        password: "azerty",
+        email: "admin@test.tld",
+        password: "admin",
         status: "connected",
-      };
+      }; //todo changed to admin values
 
       const inputEmailUser = screen.getByTestId("admin-email-input");
       fireEvent.change(inputEmailUser, { target: { value: inputData.email } });
