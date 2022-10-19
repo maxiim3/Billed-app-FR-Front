@@ -91,7 +91,7 @@ describe('Given I am connected as an Admin', () => {
     })
   })
 
-  describe('When I am on Dashboard page and I click on edit icon of a card', () => {
+  describe('When I am on Dashboard page and I click on edit icon of a cardBill', () => {
     test('Then, right form should be filled',  () => {
 
       const onNavigate = (pathname) => {
@@ -119,7 +119,7 @@ describe('Given I am connected as an Admin', () => {
     })
   })
 
-  describe('When I am on Dashboard page and I click 2 times on edit icon of a card', () => {
+  describe('When I am on Dashboard page and I click 2 times on edit icon of a cardBill', () => {
     test('Then, big bill Icon should Appear',  () => {
 
       const onNavigate = (pathname) => {
