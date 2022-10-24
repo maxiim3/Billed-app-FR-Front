@@ -77,7 +77,6 @@ export default class NewBill {
             fileName: this.fileName,
             status: 'pending'
         }
-        console.log(bill) // todo comment est ajouté l'image  au server ?
         this.updateBill(bill)
         this.onNavigate(ROUTES_PATH['Bills'])
     }

@@ -2,17 +2,21 @@
  * @jest-environment jsdom
  */
 
-import { screen } from "@testing-library/dom"
-import NewBillUI from "../views/NewBillUI.js"
-import NewBill from "../containers/NewBill.js"
+import {screen, waitFor} from "@testing-library/dom"
+
+import {ROUTES_PATH} from "../constants/routes.js";
+import {loadBillsPage} from "./Bills.js";
 
 
 describe("Given I am connected as an employee", () => {
-  describe("When I am on NewBill Page", () => {
-    test("Then ...", () => {
-      const html = NewBillUI()
-      document.body.innerHTML = html
-      //to-do write assertion
+    describe("Given I am on NewBills page", () => {
+        it("Should highlight the mail icon", async () => {
+            await loadBillsPage()
+            window.onNavigate(ROUTES_PATH.NewBill)
+            await waitFor(() => screen.getByTestId('icon-mail'))
+            const mailIcon = screen.getByTestId('icon-mail')
+            console.log(mailIcon)
+            expect(mailIcon.classList.contains("active-icon")).toBe(true)
+        })
     })
-  })
 })
