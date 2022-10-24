@@ -5,13 +5,13 @@
 import {screen, waitFor} from "@testing-library/dom"
 
 import {ROUTES_PATH} from "../constants/routes.js";
-import {loadBillsPage} from "./Bills.js";
+import {loadUI} from "./Bills.js";
 
 
 describe("Given I am connected as an employee", () => {
     describe("Given I am on NewBills page", () => {
         it("Should highlight the mail icon", async () => {
-            await loadBillsPage()
+            await loadUI()
             window.onNavigate(ROUTES_PATH.NewBill)
             await waitFor(() => screen.getByTestId('icon-mail'))
             const mailIcon = screen.getByTestId('icon-mail')
