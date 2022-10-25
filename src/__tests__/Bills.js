@@ -13,8 +13,11 @@ import mockStore from "../__mocks__/store.js";
 import {filteredBills} from "../containers/Dashboard.js";
 import DashboardUI from "../views/DashboardUI.js";
 import userEvent from "@testing-library/user-event";
+
 // todo Pourquoi le fichier ne s'appelle pas bills.test.unit.js  ou bills.test.js ?
-// todo COmment estre sur que les mock sont integres ? Peut etre doit on utiliser les alias de typescript
+// todo Comment est sur que les mock sont integres ? Peut etre doit on utiliser les alias de typescript
+// todo comment va se passer la soutenance ?
+
 /**
  * todo :
  *      - je me connect en tant qu'employee:
@@ -37,13 +40,12 @@ import userEvent from "@testing-library/user-event";
 
 // jest.mock("../app/store", () => mockStore)
 
+await loadUI(ROUTES_PATH.Bills)
 describe("Given I am connected as an employee", () => {
     describe("When I am on Bills Page, and the page is loaded", () => {
         test("The window icon should be highlighted", async () => {
-            await loadUI(ROUTES_PATH.Bills)
             await waitFor(() => screen.getByTestId('icon-window'))
             const windowIcon = screen.getByTestId('icon-window')
-
             expect(windowIcon.className).toEqual("active-icon")
         })
     })
@@ -65,28 +67,13 @@ describe("Given I am connected as an employee", () => {
             expect(filtered_bills.length).toBe(2)
         })
     })
-    describe('When I am on Bills page, and i want to add a new bill', () => {
-        test('Then, the button .btn-new-bill is displayed', async () => {
-            await loadUI(ROUTES_PATH.Bills)
-
-            // /*todo ne fonctionne que avec*/
-            //  await connectAsEmployee()
-            //  return document.body.innerHTML = BillsUI({data: fixtureBills})
-
-            await waitFor(() => screen.getByTestId("btn-new-bill"))
-            const btn = screen.getByTestId("btn-new-bill")
-            expect(btn.textContent).toEqual("Nouvelle note de frais")
-        })
-    })
     describe('When I am on Bills page, and I click the button .btn-new-bill', () => {
         test('Then I navigate to /#employee/bill/new ', async () => {
             await loadUI(ROUTES_PATH.Bills)
             await waitFor(() => screen.getByTestId("btn-new-bill"))
             const btn = screen.getByTestId("btn-new-bill")
-
-            // const billsC = await billsContainer(bills)
-            // billsC.handleClickNewBill() // todo dois-je appeler la methode ou simuler un click user
-
+            //         //  await connectAsEmployee()
+            //         //  return document.body.innerHTML = BillsUI({data: fixtureBills})
             await userEvent.click(btn)
             expect(window.location.hash).toEqual("#employee/bill/new")
         })
@@ -141,7 +128,6 @@ describe("Given I am connected as an employee", () => {
         describe("when I click on the eye icon of the new bill", () => {
             test.todo("then the modal should be open")
             test.todo("then the bill's image should be displayed in the modal")
-
         })
     })
 })
