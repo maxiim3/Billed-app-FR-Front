@@ -96,14 +96,14 @@ export default () => {
     return null
 }
 
-async function loadBillsUI(data, rootDiv) {
+export async function loadBillsUI(data, rootDiv) {
     rootDiv.innerHTML = BillsUI({data})
     setNavIconActive(1)
     return new Bills({document, onNavigate, store, localStorage})
 
 }
 
-function setNavIconActive(icon) {
+export function setNavIconActive(icon) {
     const divIcon1 = document.getElementById('layout-icon1')
     const divIcon2 = document.getElementById('layout-icon2')
     switch (icon) {
