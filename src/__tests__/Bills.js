@@ -16,32 +16,6 @@ import {fireEvent, screen, waitFor} from "@testing-library/dom"
 
 const mockBills = jest.mock('../containers/Bills.js')
 
-/*
-
-
-describe('Bills, ', () => {
-
-    beforeEach(async () => await loadRoutes(ROUTES_PATH.NewBill))
-    afterEach(() => mockBills.clearAllMocks())
-
-
-        // todo Mock constructor
-    describe("Given, I am connected as a user", () => {
-        const bill = {
-            constructor: {
-                document,
-                onNavigate: jest.fn().mockReturnValue("on Navigate is called"),
-                store: null,
-            },
-            handleClickNewBill: jest.fn(() => window.onNavigate().bind(bill))
-        }
-
-        bill.handleClickNewBill()
-        expect(onNavigate).toHaveBeenCalled()
-    })
-})
-*/
-
 
 export async function antiChrono(a, b) {
     const [year_a, month_a, day_a] = a.split('-')
@@ -164,17 +138,9 @@ describe("Given I am connected as an employee", () => {
                     const modal = screen.getByTestId("modaleFile")
                     const thisEye = eyes[INDEX]
 
-                    // const containerBills = new Bills({document, onNavigate, store, localStorage})
-                    //
-                    // const mockFn = jest.spyOn(Bills, "handleClickIconEye").mockImplementation((thisEye) => {
-                    //      console.log("CALLED " + thisEye)
-                    //     return thisEye
-                    //  })
-                    //  containerBills.handleClickIconEye(thisEye)
-                    //  expect(mockFn).toHaveBeenCalled()
+                    const containerBills = new Bills({document, onNavigate, store, localStorage})
 
-
-                    /*   const vardasfds = jest.spyOn(containerBills, "constructor").mockImplementation(() => {
+                    /*   const testMockConstructor = jest.spyOn(containerBills, "constructor").mockImplementation(() => {
                            const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
                            if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
                            const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
@@ -182,20 +148,20 @@ describe("Given I am connected as an employee", () => {
                                icon.addEventListener('click', () => this.handleClickIconEye(icon))
                            })
                        })*/
-/*
-                    const mockFn = jest.fn(thisEye => {
-                        // todo commentLorsque je Mock un constructeur, je n'ai plus besoin des parametres
-                        jest.spyOn(Bills, "handleClickIconEye").mockImplementation((thisEye) => {
-                            // const billUrl = bills[INDEX].fileUrl
-                            // const imgWidth = Math.floor(modal.width() * 0.5)
-                            // modal.innerHTML = `<div style='text-align: center;' class="bill-proof-container"><img crossorigin="anonymous" width=${imgWidth} src=${billUrl} alt=${bills[INDEX].name} /></div>`
-                            // modal.setAttribute("class", "modal fade show")
-                        })
-                    })*/
 
-                    // thisEye.onclick = () => mockFn(thisEye)
-                    // fireEvent.click(eyes[INDEX])
-                    // await userEvent.click(eyes[INDEX])
+                    const mockHandleClickOnEye = jest.fn(thisEye => {
+                        // todo commentLorsque je Mock un constructeur, je n'ai plus besoin des parametres
+                        jest.spyOn(containerBills, "handleClickIconEye").mockImplementation((thisEye) => {
+                            const billUrl = bills[INDEX].fileUrl
+                            const imgWidth = Math.floor(modal.width() * 0.5)
+                            modal.innerHTML = `<div style='text-align: center;' class="bill-proof-container"><img crossorigin="anonymous" width=${imgWidth} src=${billUrl} alt=${bills[INDEX].name} /></div>`
+                            modal.setAttribute("class", "modal fade show")
+                        })
+                    })
+
+                    thisEye.onclick = () => mockHandleClickOnEye(thisEye)
+                    fireEvent.click(eyes[INDEX])
+                    await userEvent.click(eyes[INDEX])
 
                 })
             })

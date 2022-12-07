@@ -26,7 +26,7 @@ export default class {
     const $modaleFile = $('#modaleFile');
     const imgWidth = Math.floor($modaleFile.width() * 0.5)
     $modaleFile.find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img crossorigin="anonymous" width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
-    // $modaleFile.modal('show')
+    $modaleFile.modal('show')
   }
 
   getBills = () => {
