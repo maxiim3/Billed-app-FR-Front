@@ -25,8 +25,10 @@ export default class {
     const billUrl = icon.getAttribute("data-bill-url")
     const $modaleFile = $('#modaleFile');
     const imgWidth = Math.floor($modaleFile.width() * 0.5)
+    console.log("je suis ici")
     $modaleFile.find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img crossorigin="anonymous" width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
     $modaleFile.modal('show')
+
   }
 
   getBills = () => {

@@ -3,7 +3,6 @@
  */
 
 import Bills from "../containers/Bills.js";
-import BillsUI from "../views/BillsUI.js"
 import billsUI from "../views/BillsUI.js"
 import router from "../app/Router.js";
 import store from "../app/Store.js";
@@ -58,7 +57,7 @@ describe("Given I am connected as an employee", () => {
         })
         test("Then the bills should be ordered from earliest to latest", async () => {
             await connectAsEmployee()
-            document.body.innerHTML = await BillsUI({data: bills, error: false, loading: false})
+            document.body.innerHTML = await billsUI({data: bills, error: false, loading: false})
 
             const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML);
             const datesSorted = dates.sort((a, b) => antiChrono(a, b))
@@ -68,7 +67,7 @@ describe("Given I am connected as an employee", () => {
     describe('When I am on Bills page, and I click the button to create a New Bill', () => {
         test('Then I navigate to /#employee/bill/new', async () => {
             await connectAsEmployee()
-            document.body.innerHTML = await BillsUI({data: bills, error: false, loading: false})
+            document.body.innerHTML = await billsUI({data: bills, error: false, loading: false})
 
             await waitFor(() => screen.getByTestId("btn-new-bill"))
             const btn = screen.getByTestId("btn-new-bill")
@@ -163,6 +162,8 @@ describe("Given I am connected as an employee", () => {
                     fireEvent.click(eyes[INDEX])
                     await userEvent.click(eyes[INDEX])
 
+
+                    console.log("Test")
                     expect(mockHandleClickOnEye).toHaveBeenCalled()
                 })
             })
