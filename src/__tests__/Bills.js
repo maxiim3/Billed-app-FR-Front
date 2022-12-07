@@ -163,6 +163,7 @@ describe("Given I am connected as an employee", () => {
                     fireEvent.click(eyes[INDEX])
                     await userEvent.click(eyes[INDEX])
 
+                    expect(mockHandleClickOnEye).toHaveBeenCalled()
                 })
             })
 
