@@ -22,7 +22,7 @@ export default class NewBill {
             throw new Error('extension is not type of string')
         else if (!FILE_EXTENSION.IMAGE.some(ext => ext === extension))
             throw new Error("image extension must be .jpg, .jpeg or .png")
-        return true
+        else return true
     }
 
     handleChangeFile = e => {
@@ -62,7 +62,6 @@ export default class NewBill {
 
     handleSubmit = e => {
         e.preventDefault()
-        console.log(e.target.querySelector(`input[data-testid="file"]`).value)
         const email = JSON.parse(localStorage.getItem("user")).email
         const bill = {
             email,

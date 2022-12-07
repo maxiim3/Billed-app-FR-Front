@@ -2,17 +2,45 @@
  * @jest-environment jsdom
  */
 
-import {screen, waitFor} from "@testing-library/dom"
-import BillsUI from "../views/BillsUI.js"
-import {bills} from "../fixtures/bills.js"
-import {ROUTES, ROUTES_PATH} from "../constants/routes.js";
-import {localStorageMock} from "../__mocks__/localStorage.js";
-import router, {loadBillsUI} from "../app/Router.js";
-import userEvent from "@testing-library/user-event";
-import billsUI from "../views/BillsUI.js";
-import Router from "../app/Router.js";
 import Bills from "../containers/Bills.js";
+import BillsUI from "../views/BillsUI.js"
+import billsUI from "../views/BillsUI.js"
+import router from "../app/Router.js";
 import store from "../app/Store.js";
+import userEvent from "@testing-library/user-event";
+import {ROUTES_PATH} from "../constants/routes.js";
+import {bills} from "../fixtures/bills.js"
+import {localStorageMock} from "../__mocks__/localStorage.js";
+import {fireEvent, screen, waitFor} from "@testing-library/dom"
+
+
+const mockBills = jest.mock('../containers/Bills.js')
+
+/*
+
+
+describe('Bills, ', () => {
+
+    beforeEach(async () => await loadRoutes(ROUTES_PATH.NewBill))
+    afterEach(() => mockBills.clearAllMocks())
+
+
+        // todo Mock constructor
+    describe("Given, I am connected as a user", () => {
+        const bill = {
+            constructor: {
+                document,
+                onNavigate: jest.fn().mockReturnValue("on Navigate is called"),
+                store: null,
+            },
+            handleClickNewBill: jest.fn(() => window.onNavigate().bind(bill))
+        }
+
+        bill.handleClickNewBill()
+        expect(onNavigate).toHaveBeenCalled()
+    })
+})
+*/
 
 
 export async function antiChrono(a, b) {
@@ -22,7 +50,6 @@ export async function antiChrono(a, b) {
     if (month_a !== month_b) return month_b - month_a
     return day_b - day_a
 }
-
 
 export async function connectAsEmployee() {
     Object.defineProperty(window, 'localStorage', {value: localStorageMock})
@@ -84,20 +111,95 @@ describe("Given I am connected as an employee", () => {
             await loadRoutes(ROUTES_PATH.Bills)
             const onNavigate = () => window.onNavigate(ROUTES_PATH['NewBill'])
             const containerBills = new Bills({document, onNavigate, store, localStorage})
+            jest.mock("../containers/Bills.js")
             const mockHandleClickNewBill = jest.fn(() => containerBills.handleClickNewBill())
             mockHandleClickNewBill()
             expect(window.location.hash === "#employee/bill/new").toBeTruthy()
         })
     })
-    describe("Given i added a new bill is properly", () => {
-        test.todo("Then it should be added to the BillsUI")
-        test.todo("Then the bills' name should be correct")
-        test.todo("Then the bills' date should be correct")
-        test.todo("Then the bills' price should be correct")
-        test.todo("Then the bills' status should be 'Pending'")
-        describe("when I click on the eye icon of the new bill", () => {
-            test.todo("then the modal should be open")
-            test.todo("then the bill's image should be displayed in the modal")
+    describe("Given I am on Bills' Page", () => {
+        // connect as employee and add mocked store
+        beforeEach(async () => {
+            // Bills.mockClear()
+            // https://jestjs.io/docs/es6-class-mocks
+
+            await connectAsEmployee()
+        })
+        afterEach(() => mockBills.clearAllMocks())
+        document.body.innerHTML = billsUI({data: bills, error: false, loading: false})
+        const onNavigate = () => window.onNavigate(ROUTES_PATH['Bills'])
+        const containerBills = new Bills({document, onNavigate, store, localStorage})
+
+
+        describe("Given i added a new bill is properly", () => {
+            beforeEach(async () => await waitFor(() => screen.getByTestId('tbody')))
+            afterEach(() => mockBills.clearAllMocks())
+
+            const INDEX = 0
+            // get tBody from form element
+            const tBody = screen.getByTestId('tbody')
+            // get rows from table
+            const getRows = [...tBody.childNodes].filter(node => node instanceof HTMLTableRowElement)
+            // get nth INDEX row element
+            const firstRow = [...getRows[INDEX].childNodes].filter(node => node instanceof HTMLTableCellElement)
+
+            test("then the data should be present in the form", async () => {
+                // get second column => "Nom" | access its value
+                const firstMockedBillName = firstRow[1].textContent
+                // check data
+                console.log(firstMockedBillName)
+                expect(firstMockedBillName === bills[INDEX].name).toBeTruthy()
+            })
+
+            describe("When I click on the eye icon", () => {
+                beforeEach(async () => {
+                    await waitFor(() => {
+                        screen.getByTestId("modaleFile")
+                        screen.getAllByTestId("icon-eye")
+                    })
+                })
+                test("then the image in the modal should be displayed", async () => {
+                    // todo howe to get icon from action cells node
+                    const eyes = [...screen.getAllByTestId("icon-eye")]
+                    const modal = screen.getByTestId("modaleFile")
+                    const thisEye = eyes[INDEX]
+
+                    // const containerBills = new Bills({document, onNavigate, store, localStorage})
+                    //
+                    // const mockFn = jest.spyOn(Bills, "handleClickIconEye").mockImplementation((thisEye) => {
+                    //      console.log("CALLED " + thisEye)
+                    //     return thisEye
+                    //  })
+                    //  containerBills.handleClickIconEye(thisEye)
+                    //  expect(mockFn).toHaveBeenCalled()
+
+
+                    /*   const vardasfds = jest.spyOn(containerBills, "constructor").mockImplementation(() => {
+                           const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
+                           if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
+                           const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
+                           if (iconEye) iconEye.forEach(icon => {
+                               icon.addEventListener('click', () => this.handleClickIconEye(icon))
+                           })
+                       })*/
+/*
+                    const mockFn = jest.fn(thisEye => {
+                        // todo commentLorsque je Mock un constructeur, je n'ai plus besoin des parametres
+                        jest.spyOn(Bills, "handleClickIconEye").mockImplementation((thisEye) => {
+                            // const billUrl = bills[INDEX].fileUrl
+                            // const imgWidth = Math.floor(modal.width() * 0.5)
+                            // modal.innerHTML = `<div style='text-align: center;' class="bill-proof-container"><img crossorigin="anonymous" width=${imgWidth} src=${billUrl} alt=${bills[INDEX].name} /></div>`
+                            // modal.setAttribute("class", "modal fade show")
+                        })
+                    })*/
+
+                    // thisEye.onclick = () => mockFn(thisEye)
+                    // fireEvent.click(eyes[INDEX])
+                    // await userEvent.click(eyes[INDEX])
+
+                })
+            })
+
         })
     })
 })

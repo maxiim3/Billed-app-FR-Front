@@ -10,7 +10,7 @@ export const mockValidNewBill = {
     "status": "pending",
     "date": "2022-10-05",
     "commentary": "Déjeuner d'affaire avec Bill",
-    "fileName": "test-valid-image.png",
+    "fileName": "test_JPG.jpg",
     "fileUrl": "/src/fixtures/test_JPG.jpg"
 }
 
@@ -26,6 +26,6 @@ export const mockErrorNewBill = {
     "status": "pending",
     "date": "2022-10-05",
     "commentary": "Déjeuner d'affaire avec Bill",
-    "fileName": "test-valid-image.pdf",
+    "fileName": "test_PDF.pdf",
     "fileUrl": "/src/fixtures/test_PDF.pdf"
 }
